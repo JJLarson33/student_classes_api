@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="main" class="main-div">
+      <p>Enter your POST end point</p>
+      <div>
+        <label for="endpoint">http://localhost:8000/</label>
+        <input type="text" id="endpoint" name="endpoint" /><br />
+        <input class="button" type="button" value="Submit" onclick="submit()" />
+      </div>
+      <div id="responseArea"></div>
+    </div>
+    <div id="loader" class="loader" style="display: none"></div>
+
+    <script>
+      function submit() {
+        const div = document.getElementById("responseArea");
+        const main_div = document.getElementById("main");
+        const loader = document.getElementById("loader");
+
+        div.style.color = "black";
+        div.innerHTML = "";
+
+        main_div.style.visibility = "hidden";
+        loader.style.display = "block";
+
+        fetch(
+          `http://localhost:8000/${document.getElementById("endpoint").value}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+			        "Authorization": "C3j3h5KL5g"			  
+            },
+			body: JSON.stringify({StudentID: 21, Enrolled: "true", Age: 33, FirstName: "Joclyne", LastName: "Johnson", Gender: "female", Email: "long string email", Phone: "long phone string", Address: "long address string", JoinDate: "long date string", CourseList: [{ClassID: 0, Code: "Info 1001", Title: "Intro to Tech", Description: "This class introduces you to technology"}]}),
+			mode: "cors"
+          }
+        )
+          .then((resp) => resp.text()) // or, resp.json(), etc.
+          .then((data) => {
+            div.style.color = "green";
+            document.getElementById("responseArea").innerHTML = data;
+
+            main_div.style.visibility = "visible";
+            loader.style.display = "none";
+          })
+          .catch((error) => {
+            console.error(error);
+            div.style.color = "red";
+            document.getElementById("responseArea").innerHTML = error;
+
+            main_div.style.visibility = "visible";
+            loader.style.display = "none";
+          });
+        }
+    </script>
+    <style>
+      .main-div {
+        display: flex;
+        width: 100%;
+        height: 98vh;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .button {
+        background-color: #4caf50;
+        padding: 10px;
+        margin: 10px 0 10px 10px;
+        float: right;
+        color: white;
+        border-radius: 2px;
+        border: none;
+        transition-duration: 0.2s;
+      }
+
+      .button:hover {
+        background-color: #39703b; /* Green */
+        color: white;
+        transform: scale(1.1);
+      }
+
+      input[type="text"] {
+        border: 1px solid grey;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 4px 2px;
+        cursor: pointer;
+        height: 30px;
+      }
+
+      input[type="text"]:focus {
+        background-color: rgb(241, 241, 241);
+        border: 1px solid grey;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 4px 2px;
+        cursor: pointer;
+        height: 30px;
+      }
+
+      label,
+      p {
+        color: rgb(41, 41, 41);
+        font-size: 20px;
+        font-weight: 500;
+      }
+
+      .loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 48px;
+        height: 48px;
+        border: 5px solid #fff;
+        border-bottom-color: #ff3d00;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+      }
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </body>
+</html>
